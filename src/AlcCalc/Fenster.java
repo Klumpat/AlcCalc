@@ -13,10 +13,14 @@ import javax.swing.JPanel;
 
 public class Fenster extends JFrame {
 	
-	int countWein, countBier = 0;
-	int status = (countWein + countBier);
-	JButton btnBier, btnWein;							//initialisierung
-	JLabel lblBier, lblWein, lblStatus;
+	
+	
+	double priceWine = 2.5;
+	double priceBeer = 4;
+	int countWine, countBeer = 0;
+	int status = (int)(countWine + countBeer);
+	JButton btnBeer, btnWine, btnBill;							//initialisierung
+	JLabel lblBeer, lblWine, lblStatus, lblBill;
 	final boolean DEBUG = true;							//Debug informationen in der Console ausgeben ja/nein
 	
 	
@@ -24,48 +28,59 @@ public class Fenster extends JFrame {
 		super("AlkCalc"); 								//FensterName
 		
 		setVisible(true); 								//sichtbarkeit
-		setSize(500, 500); 								//größe
+		setSize(400, 450); 								//größe
 		setDefaultCloseOperation(EXIT_ON_CLOSE); 		//was passiert beim schließen?
 		setLayout(null);								//Layout
+		setLocationRelativeTo(null);
 		setResizable(false);							//größe nicht veränderbar
 		//create Components
 			
-			//wein
-		btnWein = new JButton("Wein");					
-		btnWein.setBounds(100, 75, 70, 25);
+			//Wine
+		btnWine = new JButton("Wine");					
+		btnWine.setBounds(100, 75, 70, 25);
 		
-		lblWein = new JLabel();
-		lblWein.setBounds(200, 75, 140, 25);
+		lblWine = new JLabel();
+		lblWine.setBounds(200, 75, 140, 25);
 		
+				
+			//Beer
+		btnBeer = new JButton("Beer");					//Inhalt
+		btnBeer.setBounds(100, 100, 70, 25);			//Position und Größe
 		
-		
-			//bier
-		btnBier = new JButton("Bier");					//Inhalt
-		btnBier.setBounds(100, 100, 70, 25);			//Position und Größe
-		
-		lblBier = new JLabel();
-		lblBier.setBounds(200, 100, 140, 25);
+		lblBeer = new JLabel();
+		lblBeer.setBounds(200, 100, 140, 25);
 			
 			//Status
 		lblStatus = new JLabel();
 		lblStatus.setBounds(100, 125, 250, 25);
+		
+			//Zwischenrechnung
+		btnBill = new JButton("Bill");
+		btnBill.setBounds(100, 200, 70, 25);
+		
+		lblBill = new JLabel();
+		lblBill.setBounds(200, 200, 250, 25);
+		
 		
 		
 		
 		//add Components
 		
 		
-		add(btnBier);
-		add(btnWein);	
-		add(lblBier);
-		add(lblWein);
+		add(btnBeer);
+		add(btnWine);	
+		add(lblBeer);
+		add(lblWine);
 		add(lblStatus);
+		add(btnBill);
+		add(lblBill);
 		
 		
 		//Listeners
 		
-		btnBier.addActionListener(new BtnHandler());
-		btnWein.addActionListener(new BtnHandler());
+		btnBeer.addActionListener(new BtnHandler());
+		btnWine.addActionListener(new BtnHandler());
+		btnBill.addActionListener(new BtnHandler());
 		
 		
 				
@@ -79,21 +94,23 @@ public class Fenster extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent btnUse) {
-				if (btnUse.getSource() == btnBier) {
+				if (btnUse.getSource() == btnBeer) {
 					if(DEBUG)System.out.println("Status: " + status);
-					countBier++;
-					lblBier.setText(countBier + "x" + btnBier.getText());
-					status = (countWein + countBier);
+					countBeer++;
+					lblBeer.setText(countBeer + "x" + btnBeer.getText());
+					status = (int)(countWine + countBeer);
 					StatusUpdate();
 					if(DEBUG)System.out.println("Status: " + status);
 					
-			}	else if (btnUse.getSource() == btnWein) {
+			}	else if (btnUse.getSource() == btnWine) {
 					if(DEBUG)System.out.println("Status: " + status);
-					countWein++;
-					lblWein.setText(countWein + "x" + btnWein.getText());
-					status = (countWein + countBier);
+					countWine++;
+					lblWine.setText(countWine + "x" + btnWine.getText());
+					status = (int)(countWine + countBeer);
 					StatusUpdate();
 					if(DEBUG)System.out.println("Status: " + status);
+			}	else if (btnUse.getSource() == btnBill) {
+					BillUpdate();
 			}
 			
 		}
@@ -117,6 +134,11 @@ public class Fenster extends JFrame {
 			
 		}
 			
+	}
+	private void BillUpdate() {
+		double bill = (countBeer*priceBeer)+(countWine*priceWine);
+		lblBill.setText("Bill = aprox.: " + bill);
+		
 	}
 	
 }
